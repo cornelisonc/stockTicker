@@ -1,0 +1,1 @@
+A better wordpress stock ticker.
