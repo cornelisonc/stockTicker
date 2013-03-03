@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.jstockticker-1.1.1.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $("#ticker").jStockTicker({});
+        });
+
+        $(document).ready(function() {
+            var arrayOfStocks = [ "GOOG", "AAPL", "F", "GE", "XOM", "GOOG", "AAPL", "F", "GE", "XOM", "GOOG", "AAPL", "F"];
+
+            $.each(arrayOfStocks, function() {
+                getAStock(this);
+            });
+        });
+
+        function getAStock(stockToGet) {
+            $.getJSON('https://finance.google.com/finance/info?client=ig&q=NYSE:'+stockToGet+'&callback=?',
+                function(response){
+                var stockInfo = response[0];
+                if (stockInfo.c > 0) {
+                    var stockString = '<span class="up">';
+                } else {
+                    var stockString = '<span class="down">';
+                }
+
+                stockString += '<span class="quote"> '+stockInfo.t+'</span>';
+                stockString += stockInfo.l+' ';
+                stockString += stockInfo.c+' ';
+                stockString += '</span>';
+                $('.stockTicker').append(stockString);
+            });
+        } 
+
+    </script>
+
+<style type="text/css">
+    div#examplePage {
+        color: #000;
+        font-family: Verdana, Arial, Helvetica, San-serif;
+        font-size: x-small;
+        text-align: left;
+        width: 760px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
+
+    div#example {
+        background: #c3c1c1 none repeat-x scroll left top;
+        width: 740px;
+        margin: 20px 0 3px;
+    }
+
+    div#example h3 {
+        font-size: xx-small;
+        font-style: italic;
+        padding: 0;
+        margin: 0 10px 0;
+        line-height: 14px;
+    }
+
+    .container {
+        background: #fff none;
+        height: 30px;
+        margin: 0 auto;
+        width: 735px;
+    }
+
+    .container .wrap {
+        width: 720px;
+        left: 10px;
+        top: 10px;
+        overflow: hidden;
+        position: relative;
+        line-height: normal;
+        font-size-adjust: none;
+    }
+
+    div.stockTicker {
+        font-family: Verdana, Arial, Helvetica, San-serif;
+        font-size: x-small;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    div.stockTicker span {
+        margin: 0 10px 0;
+    }
+
+    div.stockTicker span.up {
+        color: green;
+        padding-left: 2px;
+    }
+
+    div.stockTicker span.down {
+        color: red;
+        margin: 0;
+        padding-left: 10px;
+    }
+
+    div.stockTicker span.eq {
+        margin: 0;
+        padding-left: 10px;
+    }
+
+    div.stockTicker span.quote {
+        margin: 0;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+</style>
+</head>
+
+<body>
+<div id="examplePage">
+        <div id="ticker" class="stockTicker">
+        </div>
+
+</div>
+</body>
+</html>
