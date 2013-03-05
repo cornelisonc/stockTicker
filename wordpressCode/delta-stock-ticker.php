@@ -60,18 +60,30 @@ class Delta_Stock_Ticker {
 				<h2>Delta Stock Ticker</h2>
 				<form method="post" action="admin-post.php">
 					<input type="hidden" name="action" value="save_delta_stock_ticker_options" />
-					<!-- Adding security through hidden referrer field -->
-					<?php wp_nonce_field( 'delta_stock_ticker' ); ?>
-					Stock One: <input type="text" name="delta_stock_ticker_stock_0" value="<?php echo esc_html($options['delta_stock_ticker_stock_0'] ); ?>"/><br />
-					Stock Two: <input type="text" name="delta_stock_ticker_stock_1" value="<?php echo esc_html($options['delta_stock_ticker_stock_1'] ); ?>"/><br />
-					Stock Three: <input type="text" name="delta_stock_ticker_stock_2" value="<?php echo esc_html($options['delta_stock_ticker_stock_2'] ); ?>"/><br />
-					Stock Four: <input type="text" name="delta_stock_ticker_stock_3" value="<?php echo esc_html($options['delta_stock_ticker_stock_3'] ); ?>"/><br />
-					Stock Five: <input type="text" name="delta_stock_ticker_stock_4" value="<?php echo esc_html($options['delta_stock_ticker_stock_4'] ); ?>"/><br />
+
+					<?php 
+						// Adding security through hidden referrer field
+						wp_nonce_field( 'delta_stock_ticker' ); 
+	
+						// Cycle through each option to create input boxes
+						foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
+						{
+							echo '<input type="text" name="'.$option_name.'" value="'.$option_value.'"/><br />';
+						} 
+					?>
 
 					<input type="submit" value="Submit" class="button-primary"/>
 				</form>
 			</div>
 		<?php
+
+
+		foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
+		{
+			var_dump($option_name);
+			var_dump($option_value);
+		}
+
 	}
 
 	function delta_stock_ticker_admin_init() 
@@ -94,13 +106,28 @@ class Delta_Stock_Ticker {
 		$options = get_option( 'delta_stock_ticker_stocks' );
 
 		//Cycle through all text form fields and store their values in the options array
-		foreach ( array( 'delta_stock_ticker_stocks' ) as $option_name )
+		// foreach ( array( 'delta_stock_ticker_stocks' ) as $option_name )
+		// {
+		// 	if ( isset( $_POST[$option_name] ) )
+		// 	{
+		// 		$options[$option_name] = sanitize_text_field( $_POST[$option_name] );
+		// 	}
+		// } 
+
+		foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
 		{
 			if ( isset( $_POST[$option_name] ) )
 			{
-				$options[$option_name] = sanitize_text_field( $_POST[$option_name] );
+				$options[$option_name] = sanitize_text_field( $_POST[$option_value]);
 			}
 		} 
+
+		//Store updated options array to database
+		update_option( 'delta_stock_ticker_stocks', $options );
+
+		//Redirect the page to the configuration form that was processed
+		wp_redirect( add_query_arg( 'page', 'delta_stock_ticker', admin_url( 'options-general.php' ) ) );
+		exit;
 	}
 }
 
