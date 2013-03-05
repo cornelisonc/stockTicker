@@ -8,8 +8,10 @@ Author: Ceili Cornelison
 Author URI: deltasys.com
 */
 
-class Delta_Stock_Ticker {
-	function __construct() {
+class Delta_Stock_Ticker
+{
+	function __construct()
+	{
 		add_action( 'wp_enqueue_scripts', 	array( $this, 'delta_get_stock_ticker_css' ) );
 		add_action( 'wp_head', 				array( $this, 'delta_get_stock_ticker_js' ) );
 		add_action( 'admin_menu', 			array( $this, 'delta_stock_ticker_settings_menu' ), 1 );
@@ -22,8 +24,8 @@ class Delta_Stock_Ticker {
 		$delta_stock_ticker_jquery		= plugins_url( 'js/jquery-1.4.2.min.js', __FILE__ );
 		$delta_stock_ticker_js 			= plugins_url( 'js/jquery.jstockticker-1.1.1.js', __FILE__ );
 		?>
-		<script type="text/javascript" src="<?php echo $delta_stock_ticker_jquery; ?>"></script>
-		<script type="text/javascript" src="<?php echo $delta_stock_ticker_js; ?>"></script>
+			<script type="text/javascript" src="<?php echo $delta_stock_ticker_jquery; ?>"></script>
+			<script type="text/javascript" src="<?php echo $delta_stock_ticker_js; ?>"></script>
 		<?php
 	}
 
@@ -34,7 +36,48 @@ class Delta_Stock_Ticker {
 
 	function delta_stock_ticker_settings_menu()
 	{
-		add_options_page( 'Delta Stock Ticker', 'Delta Stock Ticker', 'manage_options', 'delta_stock_ticker', array( $this, 'delta_stock_ticker_config_page' ) );
+		$options_page = add_options_page( 'Delta Stock Ticker', 'Delta Stock Ticker', 'manage_options', 'delta_stock_ticker', array( $this, 'delta_stock_ticker_config_page' ) );
+		
+		if ( $options_page ) {
+			add_action( 'load-'.$options_page, array( $this, 'delta_stock_ticker_help_tabs' ) );
+		}
+	}
+
+	function delta_stock_ticker_help_tabs()
+	{
+		$screen = get_current_screen();
+		$screen->add_help_tab( array(
+			'id'		=>	'delta-stock-ticker-help-instructions',
+			'title' 	=>	'Instructions',
+			'callback'	=>	array( $this, 'delta_stock_ticker_help_instructions' )
+			) );
+
+		$screen->add_help_tab( array(
+			'id'		=>	'delta-stock-ticker-help-faq',
+			'title'		=>	'FAQ',
+			'callback'	=>	array( $this, 'delta_stock_ticker_help_faq' )
+			) );
+
+		$screen->set_help_sidebar( '<p>This is the sidebar content.</p>' );
+	}
+
+	function delta_stock_ticker_help_instructions()
+	{
+		?>
+			<p>These are instructions explaining how to use this plugin.</p>
+		<?php
+	}
+
+	function delta_stock_ticker_help_faq()
+	{
+		?>
+			<p>These are the most frequently asked questions on the use of this plugin.</p>
+		<?php
+	}
+
+	function delta_stock_ticker_admin_init() 
+	{
+		add_action( 'admin_post_save_delta_stock_ticker_options', array( $this, 'process_delta_stock_ticker_options') );
 	}
 
 	function delta_stock_ticker_default_stocks()
@@ -58,6 +101,11 @@ class Delta_Stock_Ticker {
 		?>
 			<div id="delta-stock-ticker-general" class="wrap">
 				<h2>Delta Stock Ticker</h2>
+				<?php
+					if ( isset( $_GET['message'] ) && $_GET['message'] == '1' ) {
+						echo "<div id='message' class='updated fade'><p><strong>Settings Saved</strong></p></div>";
+					}
+				?>
 				<form method="post" action="admin-post.php">
 					<input type="hidden" name="action" value="save_delta_stock_ticker_options" />
 
@@ -76,11 +124,6 @@ class Delta_Stock_Ticker {
 				</form>
 			</div>
 		<?php
-	}
-
-	function delta_stock_ticker_admin_init() 
-	{
-		add_action( 'admin_post_save_delta_stock_ticker_options', array( $this, 'process_delta_stock_ticker_options') );
 	}
 
 	function process_delta_stock_ticker_options()
@@ -108,13 +151,16 @@ class Delta_Stock_Ticker {
 		//Store updated options array to database
 		update_option( 'delta_stock_ticker_stocks', $options );
 
-		//Redirect the page to the configuration form that was processed
-		wp_redirect( add_query_arg( 'page', 'delta_stock_ticker', admin_url( 'options-general.php' ) ) );
+		//Redirect the page to the configuration form that was processed with confirmation message
+		wp_redirect( add_query_arg(
+			array( 
+				'page' => 'delta_stock_ticker',
+				'message' => '1' ),
+			admin_url( 'options-general.php' ) ) );
 		exit;
 	}
 }
 
 $my_delta_stock_ticker = new Delta_Stock_Ticker();
-
 
 ?>
