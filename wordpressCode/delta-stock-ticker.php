@@ -8,15 +8,18 @@ Author: Ceili Cornelison
 Author URI: deltasys.com
 */
 
+global $options_page;
+
 class Delta_Stock_Ticker
 {
 	function __construct()
 	{
-		add_action( 'wp_enqueue_scripts', 	array( $this, 'delta_get_stock_ticker_css' ) );
-		add_action( 'wp_head', 				array( $this, 'delta_get_stock_ticker_js' ) );
-		add_action( 'admin_menu', 			array( $this, 'delta_stock_ticker_settings_menu' ), 1 );
-		add_action( 'admin_init', 			array( $this, 'delta_stock_ticker_admin_init' ) );
-		register_activation_hook( __FILE__, array( $this, 'delta_stock_ticker_default_stocks' ) );
+		add_action( 'admin_enqueue_scripts', 	array( $this, 'delta_stock_ticker_load_admin_scripts' ) );
+		add_action( 'wp_enqueue_scripts', 		array( $this, 'delta_get_stock_ticker_css' ) );
+		add_action( 'wp_head', 					array( $this, 'delta_get_stock_ticker_js' ) );
+		add_action( 'admin_menu', 				array( $this, 'delta_stock_ticker_settings_menu' ), 1 );
+		add_action( 'admin_init', 				array( $this, 'delta_stock_ticker_admin_init' ) );
+		register_activation_hook( __FILE__, 	array( $this, 'delta_stock_ticker_default_stocks' ) );
 	}
 
 	function delta_get_stock_ticker_js()
@@ -36,6 +39,8 @@ class Delta_Stock_Ticker
 
 	function delta_stock_ticker_settings_menu()
 	{
+		global $options_page;
+
 		$options_page = add_options_page( 'Delta Stock Ticker', 'Delta Stock Ticker', 'manage_options', 'delta_stock_ticker', array( $this, 'delta_stock_ticker_config_page' ) );
 		
 		if ( $options_page ) {
@@ -44,7 +49,7 @@ class Delta_Stock_Ticker
 	}
 
 	function delta_stock_ticker_help_tabs()
-	{
+	{		
 		$screen = get_current_screen();
 		$screen->add_help_tab( array(
 			'id'		=>	'delta-stock-ticker-help-instructions',
@@ -59,6 +64,54 @@ class Delta_Stock_Ticker
 			) );
 
 		$screen->set_help_sidebar( '<p>This is the sidebar content.</p>' );
+
+		global $options_page;
+		add_meta_box( 
+			'delta_stock_ticker_general_meta_box', 
+			'General Settings',
+			array( $this, 'delta_stock_ticker_meta_box'),
+			$options_page,
+			'normal',
+			'core' );
+		add_meta_box(
+			'delta_stock_ticker_second_meta_box',
+			'Second Settings Section',
+			array( $this, 'delta_stock_ticker_second_meta_box'),
+			$options_page,
+			'normal',
+			'core' );
+	}
+
+	function delta_stock_ticker_load_admin_scripts()
+	{
+		global $current_screen;
+		global $options_page;
+
+		if( $current_screen->id == $options_page )
+		{
+			wp_enqueue_script( 'common' );
+			wp_enqueue_script( 'wp-lists' );
+			wp_enqueue_script( 'postbox' );
+		}
+	}
+
+	function delta_stock_ticker_meta_box( $options )
+	{
+		?>
+			<h2>Stocks</h2>
+		<?php
+
+		foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
+		{
+			echo '<input type="text" name="'.$option_name.'" value="'.$option_value.'"/><br />';
+		} 
+	}
+
+	function delta_stock_ticker_second_meta_box( $options )
+	{
+		?>
+			<p>This is the content of the second metabox.</p>
+		<?php
 	}
 
 	function delta_stock_ticker_help_instructions()
@@ -98,6 +151,7 @@ class Delta_Stock_Ticker
 	{
 		//Retrieve plugin configuration options from database
 		$options = get_option( 'delta_stock_ticker_stocks' );
+		global $options_page;
 		?>
 			<div id="delta-stock-ticker-general" class="wrap">
 				<h2>Delta Stock Ticker</h2>
@@ -113,16 +167,35 @@ class Delta_Stock_Ticker
 						// Adding security through hidden referrer field
 						wp_nonce_field( 'delta_stock_ticker' ); 
 	
-						// Cycle through each option to create input boxes
-						foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
-						{
-							echo '<input type="text" name="'.$option_name.'" value="'.$option_value.'"/><br />';
-						} 
+						//Security fields for meta box save processing
+						wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+						wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
 					?>
 
-					<input type="submit" value="Submit" class="button-primary"/>
+					<div id="poststuff" class="metabox-holder">
+						<dig id="post-body">
+							<div id="post-body-content">
+								<?php do_meta_boxes( $options_page, 'normal', $options ); ?>
+
+								<input type="submit" value="Submit" class="button-primary"/>
+							</div>
+						</div>
+						<br class="clear"/>
+					</div>
 				</form>
 			</div>
+
+			<script type="text/javascript">
+				//<![CDATA[
+					jQuery(document).ready(function($) {
+						//close postboxes that should be closed
+						$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+
+						//postboxes setup
+						postboxes.add_postbox_toggles('<?php echo $options_page; ?>');
+					});
+				//]]>
+			</script>
 		<?php
 	}
 
