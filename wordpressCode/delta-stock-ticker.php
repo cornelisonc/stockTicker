@@ -105,20 +105,11 @@ class Delta_Stock_Ticker {
 		//Retrieve original plugin options array
 		$options = get_option( 'delta_stock_ticker_stocks' );
 
-		//Cycle through all text form fields and store their values in the options array
-		// foreach ( array( 'delta_stock_ticker_stocks' ) as $option_name )
-		// {
-		// 	if ( isset( $_POST[$option_name] ) )
-		// 	{
-		// 		$options[$option_name] = sanitize_text_field( $_POST[$option_name] );
-		// 	}
-		// } 
-
 		foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
 		{
 			if ( isset( $_POST[$option_name] ) )
 			{
-				$options[$option_name] = sanitize_text_field( $_POST[$option_value]);
+				$options[$option_name] = sanitize_text_field( $_POST[$option_name]);
 			}
 		} 
 
