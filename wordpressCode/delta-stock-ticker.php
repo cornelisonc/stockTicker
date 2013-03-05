@@ -76,14 +76,6 @@ class Delta_Stock_Ticker {
 				</form>
 			</div>
 		<?php
-
-
-		foreach ( get_option('delta_stock_ticker_stocks') as $option_name => $option_value )
-		{
-			var_dump($option_name);
-			var_dump($option_value);
-		}
-
 	}
 
 	function delta_stock_ticker_admin_init() 
