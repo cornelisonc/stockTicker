@@ -19,7 +19,7 @@ function getAStock(stockToGet) {
             var stockString = '<span class="down">';
         }
 
-        stockString += '<span class="quote"> '+stockInfo.t+'</span>';
+        stockString += '<span class="quote"> '+stockInfo.t+' </span>';
         stockString += stockInfo.l+' ';
         stockString += stockInfo.c+' ';
         stockString += '</span>';
