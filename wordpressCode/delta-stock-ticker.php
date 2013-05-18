@@ -68,7 +68,6 @@ class Delta_stock_ticker {
 		$options = get_option('delta_stock_ticker');
 
 		echo $args['before_widget'];
-		echo $args['before_title'] . 'Delta Stock Ticker' . $args['after_title'];
 		?>
 			<script>
     			var arrayOfStocks = [ 
