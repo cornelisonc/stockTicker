@@ -1,43 +1,43 @@
 
-    .deltaWrap {
-        width: 80%;
-        overflow: hidden;
-        position: relative;
-        line-height: normal;
-        font-size-adjust: none;
-    }
+.deltaWrap {
+    width: 90%;
+    overflow: hidden;
+    position: relative;
+    line-height: normal;
+    font-size-adjust: none;
+}
 
-    div.stockTicker {
-        font-family: Verdana, Arial, Helvetica, San-serif;
-        font-size: x-small;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        position: relative;
-    }
+div.stockTicker {
+    font-family: Verdana, Arial, Helvetica, San-serif;
+    font-size: x-small;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
 
-    div.stockTicker span {
-        margin: 0 10px 0;
-    }
+div.stockTicker span {
+    margin: 0 10px 0;
+}
 
-    div.stockTicker span.up {
-        color: green;
-        padding-left: 2px;
-    }
+div.stockTicker span.up {
+    color: green;
+    padding-left: 2px;
+}
 
-    div.stockTicker span.down {
-        color: red;
-        margin: 0;
-        padding-left: 10px;
-    }
+div.stockTicker span.down {
+    color: red;
+    margin: 0;
+    padding-left: 10px;
+}
 
-    div.stockTicker span.eq {
-        margin: 0;
-        padding-left: 10px;
-    }
+div.stockTicker span.eq {
+    margin: 0;
+    padding-left: 10px;
+}
 
-    div.stockTicker span.quote {
-        margin: 0;
-        font-weight: bold;
-        padding-left: 10px;
-    }
+div.stockTicker span.quote {
+    margin: 0;
+    font-weight: bold;
+    padding-left: 10px;
+}

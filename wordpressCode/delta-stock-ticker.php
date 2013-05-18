@@ -47,11 +47,12 @@ class Delta_stock_ticker {
 	function control() {
 		$data = get_option('delta_stock_ticker');
 		?>
-			<p><label>Option 1<input name="delta_stock_ticker_option1" type="text" value="<?php echo $data['option1']; ?>" /></label></p>
-			<p><label>Option 2<input name="delta_stock_ticker_option2" type="text" value="<?php echo $data['option2']; ?>" /></label></p>
-			<p><label>Option 3<input name="delta_stock_ticker_option3" type="text" value="<?php echo $data['option3']; ?>" /></label></p>
-			<p><label>Option 4<input name="delta_stock_ticker_option4" type="text" value="<?php echo $data['option4']; ?>" /></label></p>
-			<p><label>Option 5<input name="delta_stock_ticker_option5" type="text" value="<?php echo $data['option5']; ?>" /></label></p>
+			<p>Enter the symbol of the stocks you wish to track below. If you enter an invalid stock symbol, it will not be displayed.</p>
+			<p><label>Stock 1<input name="delta_stock_ticker_option1" type="text" value="<?php echo $data['option1']; ?>" /></label></p>
+			<p><label>Stock 2<input name="delta_stock_ticker_option2" type="text" value="<?php echo $data['option2']; ?>" /></label></p>
+			<p><label>Stock 3<input name="delta_stock_ticker_option3" type="text" value="<?php echo $data['option3']; ?>" /></label></p>
+			<p><label>Stock 4<input name="delta_stock_ticker_option4" type="text" value="<?php echo $data['option4']; ?>" /></label></p>
+			<p><label>Stock 5<input name="delta_stock_ticker_option5" type="text" value="<?php echo $data['option5']; ?>" /></label></p>
 		<?php
 			if (isset($_POST['delta_stock_ticker_option1'])) {
 				$data['option1'] = attribute_escape($_POST['delta_stock_ticker_option1']);
