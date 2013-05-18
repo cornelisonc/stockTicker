@@ -1,9 +1,12 @@
-jQuery(document).ready(function() {    
-    var arrayOfStocks = [ "GOOG", "AAPL", "F", "GE", "XOM", "GOOG", "AAPL", "F", "GE", "XOM", "GOOG", "AAPL", "F"];
+jQuery(document).ready(function() {   
 
-    jQuery.each(arrayOfStocks, function() {
-        getAStock(this);
-    });
+    if (typeof(arrayOfStocks) === 'undefined') {
+        return;
+    } else {
+        jQuery.each(arrayOfStocks, function() {
+            getAStock(this);
+        });
+    }
 });
 
 function getAStock(stockToGet) {

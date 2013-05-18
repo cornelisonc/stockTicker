@@ -61,11 +61,28 @@ class Delta_stock_ticker {
 		echo $args['before_title'] . 'Delta Stock Ticker' . $args['after_title'];
 		?>
 			<script>
-			    $("#ticker").jStockTicker({});
-			</script>
+    			var arrayOfStocks = [ 
+    				"GOOG", 
+    				"AAPL", 
+    				"F", 
+    				"GE", 
+    				"XOM", 
+    				"GOOG", 
+    				"AAPL", 
+    				"F", 
+    				"GE", 
+    				"XOM", 
+    				"GOOG", 
+    				"AAPL", 
+    				"F"
+    			];
+    		</script>
 			<div class="deltaWrap">
 				<div id="ticker" class="stockTicker"></div>
 			</div>
+			<script>
+			    jQuery("#ticker").jStockTicker({});
+			</script>
 		<?php
 		echo $args['after_widget'];
 	}
