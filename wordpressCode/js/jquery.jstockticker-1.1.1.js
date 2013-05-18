@@ -25,14 +25,14 @@
 		var $wrap = null;
 
 		if ($ticker.parent().get(0).className != 'wrap') {
-			$wrap = $ticker.wrap("<div class='wrap'></div>");
+			$wrap = $ticker.wrap("<div class='deltaWrap'></div>");
 		}
 
 		var $tickerContainer = null;
 
 		if ($ticker.parent().parent().get(0).className != 'container') {
 			$tickerContainer = $ticker.parent().wrap(
-					"<div class='container'></div>");
+					"<div class='deltaContainer'></div>");
 		}
 		
 		var node = $ticker[0].firstChild;
