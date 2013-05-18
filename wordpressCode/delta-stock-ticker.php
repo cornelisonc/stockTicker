@@ -16,7 +16,6 @@ class Delta_Stock_Ticker
 	{
 		add_action( 'admin_enqueue_scripts', 	array( $this, 'delta_stock_ticker_load_admin_scripts' ) );
 		add_action( 'wp_enqueue_scripts', 		array( $this, 'delta_get_stock_ticker_css' ) );
-		add_action( 'wp_enqueue_scripts',		array( $this, 'delta_stock_ticker_front_facing_pages' ) );
 		add_action( 'wp_head', 					array( $this, 'delta_get_stock_ticker_js' ) );
 		add_action( 'admin_menu', 				array( $this, 'delta_stock_ticker_settings_menu' ), 1 );
 		add_action( 'admin_init', 				array( $this, 'delta_stock_ticker_admin_init' ) );
@@ -25,8 +24,10 @@ class Delta_Stock_Ticker
 
 	function delta_get_stock_ticker_js()
 	{
+		$delta_stock_ticker_jquery		= plugins_url( 'js/jquery-1.4.2.min.js', __FILE__ );
 		$delta_stock_ticker_js 			= plugins_url( 'js/jquery.jstockticker-1.1.1.js', __FILE__ );
 		?>
+			<script type="text/javascript" src="<?php echo $delta_stock_ticker_jquery; ?>"></script>
 			<script type="text/javascript" src="<?php echo $delta_stock_ticker_js; ?>"></script>
 		<?php
 	}
@@ -45,11 +46,6 @@ class Delta_Stock_Ticker
 		if ( $options_page ) {
 			add_action( 'load-'.$options_page, array( $this, 'delta_stock_ticker_help_tabs' ) );
 		}
-	}
-
-	function delta_stock_ticker_front_facing_pages()
-	{
-		wp_enqueue_script( 'jquery' );
 	}
 
 	function delta_stock_ticker_help_tabs()
