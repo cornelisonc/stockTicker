@@ -78,9 +78,7 @@ class Delta_stock_ticker {
     				?>
     			];
     		</script>
-			<div class="deltaWrap">
 				<div id="ticker" class="stockTicker"></div>
-			</div>
 			<script>
 			    jQuery("#ticker").jStockTicker({});
 			</script>
