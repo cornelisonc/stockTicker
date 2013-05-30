@@ -33,18 +33,44 @@ class DeltaStockTicker {
 		$data = get_option( 'delta_stock_ticker' );
 ?>
 			<p>Enter the symbol of the stocks you wish to track below. If you enter an invalid stock symbol, it will not be displayed.</p>
-			<p><label>Stock 1<input name="delta_stock_ticker_option1" type="text" value="<?php echo $data['option1']; ?>" /></label></p>
-			<p><label>Stock 2<input name="delta_stock_ticker_option2" type="text" value="<?php echo $data['option2']; ?>" /></label></p>
-			<p><label>Stock 3<input name="delta_stock_ticker_option3" type="text" value="<?php echo $data['option3']; ?>" /></label></p>
-			<p><label>Stock 4<input name="delta_stock_ticker_option4" type="text" value="<?php echo $data['option4']; ?>" /></label></p>
-			<p><label>Stock 5<input name="delta_stock_ticker_option5" type="text" value="<?php echo $data['option5']; ?>" /></label></p>
+			
+			<p>
+				<label>Stock 1
+					<input name="delta_stock_ticker_option1" type="text" value="
+					<?php echo $data['option1']; ?>" />
+				</label>
+			</p>
+			<p>
+				<label>Stock 2
+					<input name="delta_stock_ticker_option2" type="text" value="
+					<?php esc_attr_e($data['option2']); ?>" />
+				</label>
+			</p>
+			<p>
+				<label>Stock 3
+					<input name="delta_stock_ticker_option3" type="text" value="
+					<?php esc_attr_e($data['option3']); ?>" />
+				</label>
+			</p>
+			<p>
+				<label>Stock 4
+					<input name="delta_stock_ticker_option4" type="text" value="
+					<?php esc_attr_e($data['option4']); ?>" />
+				</label>
+			</p>
+			<p>
+				<label>Stock 5
+					<input name="delta_stock_ticker_option5" type="text" value="
+					<?php esc_attr_e($data['option5']); ?>" />
+				</label>
+			</p>
 		<?php
 		if ( isset( $_POST['delta_stock_ticker_option1'] ) ) {
-			$data['option1'] = attribute_escape( $_POST['delta_stock_ticker_option1'] );
-			$data['option2'] = attribute_escape( $_POST['delta_stock_ticker_option2'] );
-			$data['option3'] = attribute_escape( $_POST['delta_stock_ticker_option3'] );
-			$data['option4'] = attribute_escape( $_POST['delta_stock_ticker_option4'] );
-			$data['option5'] = attribute_escape( $_POST['delta_stock_ticker_option5'] );
+			$data['option1'] = $_POST['delta_stock_ticker_option1'];
+			$data['option2'] = $_POST['delta_stock_ticker_option2'];
+			$data['option3'] = $_POST['delta_stock_ticker_option3'];
+			$data['option4'] = $_POST['delta_stock_ticker_option4'];
+			$data['option5'] = $_POST['delta_stock_ticker_option5'];
 			update_option( 'delta_stock_ticker', $data );
 		}
 	}
@@ -53,14 +79,12 @@ class DeltaStockTicker {
 		$options = get_option( 'delta_stock_ticker' );
 
 		echo $args['before_widget'];
-?>
+		?>
 			<script>
     			var arrayOfStocks = [
-    				<?php
-		foreach ( $options as $option ) {
-			echo '"' . $option . '",';
-		}
-?>
+				<?php
+					json_encode( $options );
+				?>
     			];
     		</script>
 				<div id="ticker" class="stockTicker"></div>
