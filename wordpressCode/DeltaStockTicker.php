@@ -34,36 +34,11 @@ class DeltaStockTicker {
 ?>
 			<p>Enter the symbol of the stocks you wish to track below. If you enter an invalid stock symbol, it will not be displayed.</p>
 			
-			<p>
-				<label>Stock 1
-					<input name="delta_stock_ticker_option1" type="text" value="
-					<?php echo $data['option1']; ?>" />
-				</label>
-			</p>
-			<p>
-				<label>Stock 2
-					<input name="delta_stock_ticker_option2" type="text" value="
-					<?php esc_attr_e($data['option2']); ?>" />
-				</label>
-			</p>
-			<p>
-				<label>Stock 3
-					<input name="delta_stock_ticker_option3" type="text" value="
-					<?php esc_attr_e($data['option3']); ?>" />
-				</label>
-			</p>
-			<p>
-				<label>Stock 4
-					<input name="delta_stock_ticker_option4" type="text" value="
-					<?php esc_attr_e($data['option4']); ?>" />
-				</label>
-			</p>
-			<p>
-				<label>Stock 5
-					<input name="delta_stock_ticker_option5" type="text" value="
-					<?php esc_attr_e($data['option5']); ?>" />
-				</label>
-			</p>
+			<p><label>Stock 1<input name="delta_stock_ticker_option1" type="text" size="5" value="<?php esc_attr_e($data['option1']); ?>" /></label></p>
+			<p><label>Stock 2<input name="delta_stock_ticker_option2" type="text" size="5" value="<?php esc_attr_e($data['option2']); ?>" /></label></p>
+			<p><label>Stock 3<input name="delta_stock_ticker_option3" type="text" size="5" value="<?php esc_attr_e($data['option3']); ?>" /></label></p>
+			<p><label>Stock 4<input name="delta_stock_ticker_option4" type="text" size="5" value="<?php esc_attr_e($data['option4']); ?>" /></label></p>
+			<p><label>Stock 5<input name="delta_stock_ticker_option5" type="text" size="5" value="<?php esc_attr_e($data['option5']); ?>" /></label></p>
 		<?php
 		if ( isset( $_POST['delta_stock_ticker_option1'] ) ) {
 			$data['option1'] = $_POST['delta_stock_ticker_option1'];
@@ -81,13 +56,12 @@ class DeltaStockTicker {
 		echo $args['before_widget'];
 		?>
 			<script>
-    			var arrayOfStocks = [
+    			var arrayOfStocks =
 				<?php
-					foreach ($options as $option) {
-						echo '"' . $option . '",';
-					}
+					echo json_encode(array_values($options));
            		?>
-    			];
+    			;
+
     		</script>
 				<div id="ticker" class="stockTicker"></div>
 			<script>

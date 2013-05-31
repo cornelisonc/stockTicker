@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Delta Stock Ticker
-Plugin URI:
-Description: This stock ticker doesn't suck.
-Author: Ceili Cornelison, Delta Systems
-Version:
-Author URI:
+Plugin URI: http://deltasys.com/
+Description: Easy and awesome stock ticker widget.
+Version: 0.9
+Author: Delta Systems
+Author URI: http://deltasys.com
+License: GPLv2 or later
 */
 
 include_once("DeltaStockTicker.php");
