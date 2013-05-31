@@ -3,7 +3,7 @@
 class DeltaStockTicker {
 
 	function load_scripts() {
-		wp_enqueue_style( 'the_css', plugins_url( '/delta-stock-ticker.css', __FILE__ ) );
+		wp_enqueue_style( 'css', plugins_url( '/delta-stock-ticker.css', __FILE__ ) );
 		wp_enqueue_script( 'jquery.jstockticker', plugins_url( '/js/jquery.jstockticker-1.1.1.js', __FILE__ ), array( 'jquery' ) );
 		wp_enqueue_script( 'delta-stock-ticker', plugins_url( '/js/delta-stock-ticker.js', __FILE__ ), array( 'jquery' ) );
 
@@ -83,8 +83,10 @@ class DeltaStockTicker {
 			<script>
     			var arrayOfStocks = [
 				<?php
-					json_encode( $options );
-				?>
+					foreach ($options as $option) {
+						echo '"' . $option . '",';
+					}
+           		?>
     			];
     		</script>
 				<div id="ticker" class="stockTicker"></div>
