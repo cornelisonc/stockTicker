@@ -61,7 +61,6 @@ class DeltaStockTicker {
 	    }   
 	}   
 
-
 	function widget( $args ) {
 		$options = get_option( 'delta_stock_ticker' );
 
